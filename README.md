@@ -7,7 +7,8 @@ Terraform infrastructure for Data Mesh with Snowflake
 ### Prerequisites
 
 1. Snowflake trial account
-2. SnowSQL CLI installed:
+2. Terraform >= 1.6 installed (`brew install terraform` on macOS)
+3. SnowSQL CLI installed:
    - **macOS**: `brew install snowflake-snowsql`
 
 ### Step 1: Create Snowflake User and Role
@@ -65,13 +66,30 @@ cp env.example .env
 ```
 
 2. Edit `.env` with your actual values:
-- `SNOWFLAKE_ACCOUNT`: Your Snowflake account identifier
+- `SNOWFLAKE_ORGANIZATION_NAME`: Your organization name (empty "" for legacy accounts)
+- `SNOWFLAKE_ACCOUNT_NAME`: Your account name (full account for legacy accounts like AO40357)
 - `SNOWFLAKE_USER`: TERRAFORM_USER
-- `SNOWFLAKE_PRIVATE_KEY_PATH`: ~/.snowflake/snowflake_tf_snow_key.p8
+- `SNOWFLAKE_PRIVATE_KEY_LOCAL_PATH`: ~/.snowflake/snowflake_tf_snow_key.p8
 - `SNOWFLAKE_ROLE`: TERRAFORM_ROLE
+and source it
+```bash
+bash .env
+```
 
 ### Step 5: Manual Test Connection
 
 ```bash
 ./test_connections.sh
+```
+
+### Step 6: Terraform Automated Test
+
+1. Initialize Terraform:
+```bash
+terraform init
+```
+
+2. Load environment variables and run Terraform tests:
+```bash
+terraform test
 ```

@@ -7,10 +7,14 @@ Terraform infrastructure for Data Mesh with Snowflake
 ```
 terraform_snowflake_train/
 ├── modules/
-│   └── snowflake-connectivity/    # Connectivity test module
-├── environments/                  # Future environment configs
+│   ├── snowflake-connectivity/    # Connectivity test module
+│   └── snowflake-database/        # Database creation module
+├── stacks/
+│   └── stage/                     # Stage environment stack
 ├── tests/                        # All tests (centralized)
-│   └── connectivity.tftest.hcl
+│   ├── snowflake-connectivity.tftest.hcl
+│   ├── snowflake-database.tftest.hcl
+│   └── stage-stack.tftest.hcl
 ├── env.example                   # Environment variables template
 ├── test_connections.sh           # Manual connection test
 └── README.md                     # This file
@@ -18,6 +22,7 @@ terraform_snowflake_train/
 
 **Key principles:**
 - **Modules**: Reusable Terraform components
+- **Stacks**: Environment-specific implementations using modules
 - **Tests**: Centralized at project root for easy execution
 - **TDD Ready**: Structure supports Test-Driven Development approach
 

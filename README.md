@@ -2,6 +2,25 @@
 
 Terraform infrastructure for Data Mesh with Snowflake
 
+## Project Structure
+
+```
+terraform_snowflake_train/
+├── modules/
+│   └── snowflake-connectivity/    # Connectivity test module
+├── environments/                  # Future environment configs
+├── tests/                        # All tests (centralized)
+│   └── connectivity.tftest.hcl
+├── env.example                   # Environment variables template
+├── test_connections.sh           # Manual connection test
+└── README.md                     # This file
+```
+
+**Key principles:**
+- **Modules**: Reusable Terraform components
+- **Tests**: Centralized at project root for easy execution
+- **TDD Ready**: Structure supports Test-Driven Development approach
+
 ## Setup Guide
 
 ### Prerequisites
@@ -84,12 +103,8 @@ bash .env
 
 ### Step 6: Terraform Automated Test
 
-1. Initialize Terraform:
+Load environment variables and run tests from project root:
 ```bash
-terraform init
-```
-
-2. Load environment variables and run Terraform tests:
-```bash
+source .env
 terraform test
 ```

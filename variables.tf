@@ -1,3 +1,6 @@
+# Common Snowflake connection variables
+# Used by all stacks
+
 variable "snowflake_organization_name" {
   type        = string
   description = "Your Snowflake organization name."

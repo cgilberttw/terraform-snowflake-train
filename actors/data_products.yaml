@@ -1,0 +1,7 @@
+---
+flights:
+  data_classification: l2
+  description: "Flight data and schedules"
+companies:
+  data_classification: l1
+  description: "Company information and profiles"

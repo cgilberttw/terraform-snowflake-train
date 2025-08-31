@@ -1,30 +1,35 @@
 # Terraform Snowflake Data Mesh
 
-Terraform infrastructure for Data Mesh with Snowflake
+Toy project for auto-provisioning infrastructure for Data Mesh with Snowflake for learning purpose
+
 
 ## Project Structure
 
 ```
 terraform_snowflake_train/
+├── domains.yaml                  # Domain configuration (add domains here)
+├── main.tf                      # Auto-discovery logic
+├── variables.tf + versions.tf   # Common Terraform config
 ├── modules/
-│   ├── snowflake-connectivity/    # Connectivity test module
-│   └── snowflake-database/        # Database creation module
-├── stacks/
-│   └── stage/                     # Stage environment stack
-├── tests/                        # All tests (centralized)
-│   ├── snowflake-connectivity.tftest.hcl
-│   ├── snowflake-database.tftest.hcl
-│   └── stage-stack.tftest.hcl
-├── env.example                   # Environment variables template
-├── test_connections.sh           # Manual connection test
-└── README.md                     # This file
+│   ├── domain/                  # Domain module (creates databases)
+│   └── data-product/            # Data product module (creates schemas)
+├── finance/                     # Domain: Finance
+│   └── data_products.yaml      # Data products: transactions
+├── actors/                      # Domain: Actors  
+│   └── data_products.yaml      # Data products: flights, companies
+├── tests/                       # TDD tests
+│   ├── domains.tftest.hcl       # Domain auto-discovery tests
+│   └── data-products.tftest.hcl # Data product tests
+├── env.example                  # Environment variables template
+└── test_connections.sh          # Manual connection test
 ```
 
-**Key principles:**
-- **Modules**: Reusable Terraform components
-- **Stacks**: Environment-specific implementations using modules
-- **Tests**: Centralized at project root for easy execution
-- **TDD Ready**: Structure supports Test-Driven Development approach
+**Architecture principles:**
+- **Auto-discovery**: Domains from `domains.yaml`, data products from YAML files
+- **1 Domain = 1 Database**: `finance` → `FINANCE` database in Snowflake
+- **1 Data Product = 1 Schema**: `transactions` → `TRANSACTIONS` schema
+- **Configuration-driven**: Add domains/data products via config files
+- **TDD validated**: All functionality tested before implementation
 
 ## Setup Guide
 
@@ -111,5 +116,58 @@ bash .env
 Load environment variables and run tests from project root:
 ```bash
 source .env
+terraform init
 terraform test
+```
+
+## Deploy Data Mesh Infrastructure
+
+### Step 7: Deploy All Domains and Data Products
+
+1. Initialize Terraform:
+```bash
+terraform init
+```
+
+2. Review what will be created:
+```bash
+terraform plan
+```
+
+3. Deploy the infrastructure:
+```bash
+terraform apply
+```
+
+This will automatically create databases and schemas based on your configuration.
+
+## Add New Domain
+
+1. Edit `domains.yaml`: Add domain name
+2. Create directory: `mkdir marketing`  
+3. Create `marketing/data_products.yaml`:
+```yaml
+campaigns:
+  data_classification: l2
+```
+4. Deploy: `terraform apply`
+
+## Add Data Product
+
+Edit existing domain's `data_products.yaml`:
+```yaml
+existing_product:
+  data_classification: l1
+new_product:
+  data_classification: l2
+```
+Deploy: `terraform apply`
+
+## Test & Deploy
+
+```bash
+source .env
+terraform init
+terraform test    # Validate
+terraform apply   # Deploy
 ```

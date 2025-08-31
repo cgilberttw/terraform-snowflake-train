@@ -1,0 +1,7 @@
+---
+# Data Mesh domains configuration
+# Add a new domain here to enable it automatically
+
+domains:
+  - finance
+  - actors

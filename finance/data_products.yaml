@@ -1,0 +1,8 @@
+---
+transactions:
+  data_classification: l1
+  description: "Transactions data product"
+
+money_balances:
+  data_classification: l1
+  description: "Money balances data product"

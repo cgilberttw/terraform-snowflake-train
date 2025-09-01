@@ -14,7 +14,7 @@ run "domain_auto_discovery_test" {
   # Test 2: Each discovered domain should create a database with uppercase name
   assert {
     condition = alltrue([
-      for domain_name, domain in module.domains : 
+      for domain_name, domain in module.domains :
       domain.database_name == upper(domain_name)
     ])
     error_message = "Each domain should create a database with uppercase name (domain_name → DATABASE_NAME)"
@@ -23,7 +23,7 @@ run "domain_auto_discovery_test" {
   # Test 3: Each database comment should contain domain info
   assert {
     condition = alltrue([
-      for domain_name, domain in module.domains : 
+      for domain_name, domain in module.domains :
       can(regex("Domain: ${domain_name}", domain.database_comment))
     ])
     error_message = "Each database comment should contain 'Domain: domain_name'"

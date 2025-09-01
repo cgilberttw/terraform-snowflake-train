@@ -7,21 +7,20 @@ Toy project for auto-provisioning infrastructure for Data Mesh with Snowflake fo
 
 ```
 terraform_snowflake_train/
-├── domains.yaml                  # Domain configuration (add domains here)
-├── main.tf                      # Auto-discovery logic
-├── variables.tf + versions.tf   # Common Terraform config
+├── domains.yaml
+├── main.tf
+├── variables.tf + versions.tf
 ├── modules/
-│   ├── domain/                  # Domain module (creates databases)
-│   └── data-product/            # Data product module (creates schemas)
-├── finance/                     # Domain: Finance
-│   └── data_products.yaml      # Data products: transactions
-├── actors/                      # Domain: Actors  
-│   └── data_products.yaml      # Data products: flights, companies
-├── tests/                       # TDD tests
-│   ├── domains.tftest.hcl       # Domain auto-discovery tests
-│   └── data-products.tftest.hcl # Data product tests
-├── env.example                  # Environment variables template
-└── test_connections.sh          # Manual connection test
+│   ├── domain/
+│   └── data-product/
+├── <domain_name>/
+│   └── data_products.yaml
+...
+├── tests/
+│   ├── domains.tftest.hcl
+│   └── data-products.tftest.hcl
+├── env.example
+└── test_connections.sh
 ```
 
 **Architecture principles:**
@@ -162,6 +161,15 @@ new_product:
   data_classification: l2
 ```
 Deploy: `terraform apply`
+
+## Pre-commit Setup
+
+Install and configure pre-commit hooks:
+```bash
+brew install pre-commit      # Install pre-commit
+pre-commit install          # Setup hooks
+pre-commit run --all-files  # Test all files
+```
 
 ## Test & Deploy
 

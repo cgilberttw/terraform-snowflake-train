@@ -27,3 +27,11 @@ output "domain_name" {
   description = "Domain name this data product belongs to"
   value       = var.domain_name
 }
+
+output "schema_tags" {
+  description = "Tags applied to the schema"
+  value = {
+    domain            = var.domain_name
+    data_product_name = var.data_product_name
+  }
+}

@@ -9,6 +9,28 @@ provider "snowflake" {
   authenticator     = "SNOWFLAKE_JWT"
   private_key       = file(var.snowflake_private_key_path)
   role              = var.snowflake_role
+  warehouse         = "COMPUTE_WH"
+}
+
+# Create a database for shared tags
+resource "snowflake_database" "shared_tags" {
+  name    = "SHARED_TAGS"
+  comment = "Database for shared Data Mesh tags"
+}
+
+# Create tags for schema identification
+resource "snowflake_tag" "domain_tag" {
+  name     = "domain"
+  database = snowflake_database.shared_tags.name
+  schema   = "PUBLIC"
+  comment  = "Tag to identify the domain of a schema"
+}
+
+resource "snowflake_tag" "data_product_name_tag" {
+  name     = "data-product-name"
+  database = snowflake_database.shared_tags.name
+  schema   = "PUBLIC"
+  comment  = "Tag to identify the data product name of a schema"
 }
 
 # Auto-discover domains and data products from directory structure
@@ -58,10 +80,12 @@ module "data_products" {
 
   for_each = local.data_products
 
-  data_product_name = each.value.data_product_name
-  domain_name       = each.value.domain_name
-  database_name     = each.value.database_name
-  comment           = "Data product schema for ${each.value.data_product_name} in ${each.value.domain_name} domain"
+  data_product_name        = each.value.data_product_name
+  domain_name              = each.value.domain_name
+  database_name            = each.value.database_name
+  comment                  = "Data product schema for ${each.value.data_product_name} in ${each.value.domain_name} domain"
+  domain_tag_id            = snowflake_tag.domain_tag.id
+  data_product_name_tag_id = snowflake_tag.data_product_name_tag.id
 
   # Ensure the database exists before creating the schema
   depends_on = [module.domains]

@@ -18,3 +18,13 @@ variable "comment" {
   type        = string
   default     = "Data Mesh data product schema"
 }
+
+variable "domain_tag_id" {
+  description = "ID of the domain tag to associate with the schema"
+  type        = string
+}
+
+variable "data_product_name_tag_id" {
+  description = "ID of the data-product-name tag to associate with the schema"
+  type        = string
+}

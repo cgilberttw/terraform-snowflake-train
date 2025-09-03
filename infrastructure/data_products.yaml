@@ -1,0 +1,8 @@
+---
+airports:
+  data_classification: l1
+  description: "Airports data product"
+
+factories:
+  data_classification: l1
+  description: "Factories data product"

@@ -6,3 +6,19 @@ resource "snowflake_schema" "this" {
   name     = upper(var.data_product_name)
   comment  = "${var.comment} | Data Product: ${var.data_product_name} | Domain: ${var.domain_name} | Managed by: terraform"
 }
+
+# Associate domain tag with the schema
+resource "snowflake_tag_association" "domain_tag_association" {
+  tag_id             = var.domain_tag_id
+  object_type        = "SCHEMA"
+  object_identifiers = ["${var.database_name}.${snowflake_schema.this.name}"]
+  tag_value          = var.domain_name
+}
+
+# Associate data-product-name tag with the schema
+resource "snowflake_tag_association" "data_product_name_tag_association" {
+  tag_id             = var.data_product_name_tag_id
+  object_type        = "SCHEMA"
+  object_identifiers = ["${var.database_name}.${snowflake_schema.this.name}"]
+  tag_value          = var.data_product_name
+}

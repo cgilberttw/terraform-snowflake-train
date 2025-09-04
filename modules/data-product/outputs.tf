@@ -35,3 +35,12 @@ output "schema_tags" {
     data_product_name = var.data_product_name
   }
 }
+
+output "metadata_table" {
+  description = "Information about the metadata table"
+  value = {
+    name      = snowflake_table.metadata.name
+    full_name = "${var.database_name}.${snowflake_schema.this.name}.${snowflake_table.metadata.name}"
+    columns   = ["DATA_PRODUCT_NAME", "DOMAIN", "TABLE_NAME", "DATA_CLASSIFICATION"]
+  }
+}

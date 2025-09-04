@@ -22,3 +22,31 @@ resource "snowflake_tag_association" "data_product_name_tag_association" {
   object_identifiers = ["${var.database_name}.${snowflake_schema.this.name}"]
   tag_value          = var.data_product_name
 }
+
+# Create empty metadata table for the data product
+resource "snowflake_table" "metadata" {
+  database = var.database_name
+  schema   = snowflake_schema.this.name
+  name     = "METADATA"
+  comment  = "Metadata table for ${var.data_product_name} data product"
+
+  column {
+    name = "DATA_PRODUCT_NAME"
+    type = "STRING"
+  }
+
+  column {
+    name = "DOMAIN"
+    type = "STRING"
+  }
+
+  column {
+    name = "TABLE_NAME"
+    type = "STRING"
+  }
+
+  column {
+    name = "DATA_CLASSIFICATION"
+    type = "STRING"
+  }
+}
